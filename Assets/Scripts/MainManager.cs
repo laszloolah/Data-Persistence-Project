@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Web;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+//using TMPro;
+//using static System.Net.Mime.MediaTypeNames;
 
 public class MainManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -66,11 +70,31 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        if (DataManager.Instance.playerName != null)
+        {
+            string text = DataManager.Instance.playerName;
+            if(m_Points > DataManager.Instance.bestScore)
+            {
+                DataManager.Instance.bestScore = m_Points;
+                DataManager.Instance.bestName = text;
+                //BestScoreText.text = $"Best Score : {text} : {m_Points}";
+            }
+        }
+        else
+        {
+            BestScoreText.text = $"Best Score : Name : {m_Points}";
+        }
     }
 
     public void GameOver()
     {
+        string name = DataManager.Instance.bestName;
+        int points = DataManager.Instance.bestScore;
+
         m_GameOver = true;
         GameOverText.SetActive(true);
+        BestScoreText.text = $"Best Score : {name} : {points}";
+        DataManager.Instance.SaveBest();
     }
 }
