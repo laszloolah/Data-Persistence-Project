@@ -27,6 +27,7 @@ public class DataManager : MonoBehaviour
         LoadBest();
         // For test only
         //bestScore = 0;
+        //bestName = string.Empty;
     }
 
     // Start is called before the first frame update
